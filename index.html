@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<script src="website.css"></script>
+
+<body>
+
+    <header>
+        <h1>Task Management</h1>
+        <div id="user-info">
+            {% if current_user.is_authenticated %}
+                <p>Welcome, {{ current_user.username }}! <a href="{{ url_for('logout') }}">Logout</a></p>
+            {% else %}
+                <p>Please <a href="{{ url_for('login') }}">log in</a> to access the content.</p>
+            {% endif %}
+        </div>
+    </header>
+
+    <section id="tasks" class="center">
+        <h2>Tasks</h2>
+        <!-- Add the keyword input field -->
+        <input type="text" id="keywordInput" placeholder="Enter keyword">
+        <ul id="taskList">
+            {% for task in tasks %}
+                <li>
+                    <strong>{{ task.name }}</strong><br>
+                    Deadline: {{ task.deadline }}<br>
+                    Time Spent: {{ task.timeSpent }} hours
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+        <form id="taskForm">
+            <input type="text" id="taskName" placeholder="Task Name" required>
+            <input type="date" id="taskDeadline" required>
+            <input type="number" id="taskTime" placeholder="Time (hours)" min="0" required>
+            <button type="button" onclick="addTask()">Add Task</button>
+        </form>
+    </section>
+
+    <section id="timeSummary" class="center">
+        <h2>Time Summary</h2>
+        <p>Total Time Spent: <span id="totalHours">0</span> hours</p>
+        <!-- Place task info details only under the Time Summary section -->
+        <div id="taskDetails">
+            {% for task in tasks %}
+                Task: {{ task.name }}<br>
+                Deadline: {{ task.deadline }}<br>
+                Time Spent: {{ task.timeSpent }} hours
+                <hr>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <script src="setting.json"></script>
+</body>
+<script src="website.js"></script>
+
+</html>
